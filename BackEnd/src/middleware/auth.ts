@@ -1,6 +1,12 @@
-import { auth } from "express-oauth2-jwt-bearer";
+import { Request, Response, NextFunction } from "express";
 
-export const checkJwt = auth({
-  audience: process.env.AUTH0_AUDIENCE,
-  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
-});
+export const checkSession = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.oidc.isAuthenticated()) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  next();
+};

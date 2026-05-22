@@ -1,12 +1,21 @@
 import { paths } from "@/config/paths";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "@/features/auth/api/sync-user";
 import { Navigate } from "react-router";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth0();
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useUser({
+    retry: false,
+  });
 
-  if (isLoading) return null;
-  if (!isAuthenticated) return <Navigate to={paths.landing.path} replace />;
+  if (isLoading) return <div>Loading...</div>;
+
+  if (error || !user) {
+    return <Navigate to={paths.landing.path} replace />;
+  }
 
   return <>{children}</>;
 };

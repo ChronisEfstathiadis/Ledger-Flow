@@ -1,12 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 
 export default function Login() {
-  const { loginWithRedirect } = useAuth0();
-
   useEffect(() => {
-    loginWithRedirect();
-  }, [loginWithRedirect]);
+    window.location.href = `${import.meta.env.VITE_API_URL}/login`;
+  }, []);
 
-  return null;
+  return <div>Redirecting to login...</div>;
 }
