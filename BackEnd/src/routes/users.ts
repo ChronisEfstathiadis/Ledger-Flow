@@ -5,10 +5,11 @@ import {
   syncUser,
   updateUserController,
 } from "../controllers/users.controller";
+import { requireUser } from "../middleware/require-user";
 
 const router = Router();
 
 router.post("/me", checkSession, syncUser);
-router.get("/me", checkSession, getUser);
-router.put("/me", checkSession, updateUserController);
+router.get("/me", checkSession, requireUser, getUser);
+router.put("/me", checkSession, requireUser, updateUserController);
 export default router;
