@@ -1,12 +1,11 @@
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
-export const users = pgTable("users", {
+export const wallets = pgTable("wallets", {
   id: text("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  auth0Id: text("auth0_id").notNull().unique(),
   name: text("name").notNull(),
-  email: text("email").notNull(),
+  currency: text("currency").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
