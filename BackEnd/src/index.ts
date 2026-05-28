@@ -3,6 +3,8 @@ import { auth } from "express-openid-connect";
 import cors from "cors";
 import dotenv from "dotenv";
 import usersRouter from "./routes/users";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 dotenv.config();
 
@@ -48,6 +50,10 @@ const config = {
 };
 
 app.use(auth(config));
+
+if (process.env.NODE_ENV !== "production") {
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 app.get("/login", (req, res) => {
   res.oidc.login({
