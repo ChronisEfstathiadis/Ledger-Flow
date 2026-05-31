@@ -15,6 +15,13 @@
       "when": 1779984294111,
       "tag": "0001_kind_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780076866073,
+      "tag": "0002_mushy_beast",
+      "breakpoints": true
     }
   ]
 }

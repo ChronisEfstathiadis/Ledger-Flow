@@ -1,0 +1,22 @@
+{
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/**/*.controller.ts"],
+  "spec": {
+    "outputDirectory": "src/generated",
+    "specVersion": 3,
+    "basePath": "/",
+    "securityDefinitions": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "appSession",
+        "description": "Log in at /login in the same browser before trying protected routes."
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "src/generated",
+    "authenticationModule": "src/auth/authentication.ts"
+  }
+}

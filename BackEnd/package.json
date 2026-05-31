@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "tsoa": "tsoa spec-and-routes",
+    "dev": "npm run tsoa && tsx watch src/index.ts",
+    "build": "npm run tsoa && tsc",
     "start": "node dist/index.js",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
@@ -18,17 +20,17 @@
     "express-oauth2-jwt-bearer": "^1.8.0",
     "express-openid-connect": "^2.20.2",
     "pg": "^8.21.0",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "tsoa": "^7.0.0-alpha.0"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^25.9.1",
     "@types/pg": "^8.20.0",
-    "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "drizzle-kit": "^0.31.9",
-    "swagger-jsdoc": "^6.3.0",
     "tsx": "^4.22.1",
     "typescript": "^6.0.3"
   }
