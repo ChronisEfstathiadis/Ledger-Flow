@@ -10,13 +10,13 @@ export const transactions = pgTable("transactions", {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   walletId: text("wallet_id")
-    .references(() => wallets.id)
+    .references(() => wallets.id, { onDelete: "cascade" })
     .notNull(),
   categoryId: text("category_id")
-    .references(() => categories.id)
+    .references(() => categories.id, { onDelete: "cascade" })
     .notNull(),
   creatorId: text("creator_id")
-    .references(() => users.id)
+    .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   amount: numeric("amount").notNull(),
   type: TemplateTypeEnum("type").notNull(),

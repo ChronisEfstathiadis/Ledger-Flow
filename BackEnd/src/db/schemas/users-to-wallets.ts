@@ -6,10 +6,10 @@ export const usersToWallets = pgTable(
   "users_to_wallets",
   {
     userId: text("user_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     walletId: text("wallet_id")
-      .references(() => wallets.id)
+      .references(() => wallets.id, { onDelete: "cascade" })
       .notNull(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.walletId] })]

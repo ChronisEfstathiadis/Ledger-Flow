@@ -14,4 +14,4 @@
 */
 
 -- ALTER TABLE "users_to_wallets" DROP CONSTRAINT "<constraint_name>";--> statement-breakpoint
-ALTER TABLE "users_to_wallets" ADD CONSTRAINT "users_to_wallets_user_id_wallet_id_pk" PRIMARY KEY("user_id","wallet_id");
+-- ALTER TABLE "users_to_wallets" ADD CONSTRAINT "users_to_wallets_user_id_wallet_id_pk" PRIMARY KEY("user_id","wallet_id");

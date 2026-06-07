@@ -16,7 +16,7 @@ export const recurringTemplates = pgTable("recurring_templates", {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   walletId: text("wallet_id")
-    .references(() => wallets.id)
+    .references(() => wallets.id, { onDelete: "cascade" })
     .notNull(),
   amount: numeric("amount").notNull(),
   type: TemplateTypeEnum("type").notNull(),

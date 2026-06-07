@@ -9,6 +9,6 @@ export const categories = pgTable("categories", {
   name: text("name").notNull(),
   isDefault: boolean("is_default").notNull().default(true),
   walletId: text("wallet_id")
-    .references(() => wallets.id)
+    .references(() => wallets.id, { onDelete: "cascade" })
     .notNull(),
 });
