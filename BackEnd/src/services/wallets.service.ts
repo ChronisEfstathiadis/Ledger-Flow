@@ -1,19 +1,35 @@
 import { db } from "../db";
 import { wallets } from "../db/schemas/wallets";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { usersToWallets } from "../db/schemas/users-to-wallets";
+
+const walletColumns = {
+  id: wallets.id,
+  name: wallets.name,
+  currency: wallets.currency,
+  createdAt: wallets.createdAt,
+};
 
 export async function getWalletById(id: string) {
   return db.query.wallets.findFirst({
     where: eq(wallets.id, id),
   });
 }
-export async function createWallet(wallet: typeof wallets.$inferInsert) {
-  return db.insert(wallets).values(wallet).returning({
-    id: wallets.id,
-    name: wallets.name,
-    currency: wallets.currency,
-    createdAt: wallets.createdAt,
+export async function createWallet(
+  userId: string,
+  data: { name: string; currency: string }
+) {
+  return db.transaction(async (tx) => {
+    const [wallet] = await tx
+      .insert(wallets)
+      .values(data)
+      .returning(walletColumns);
+    await tx.insert(usersToWallets).values({
+      userId,
+      walletId: wallet.id,
+      role: "owner",
+    });
+    return wallet;
   });
 }
 export async function updateWallet(
@@ -37,7 +53,10 @@ export async function deleteWallet(id: string) {
 }
 
 export async function getAllWalletsByUserId(userId: string) {
-  return db.query.wallets.findMany({
-    where: eq(usersToWallets.userId, userId),
-  });
+  const rows = await db
+    .select({ wallet: wallets })
+    .from(wallets)
+    .innerJoin(usersToWallets, eq(wallets.id, usersToWallets.walletId))
+    .where(eq(usersToWallets.userId, userId));
+  return rows.map((r) => r.wallet);
 }

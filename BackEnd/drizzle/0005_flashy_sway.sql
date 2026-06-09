@@ -1,0 +1,1 @@
+ALTER TABLE "users_to_wallets" ADD COLUMN "role" text DEFAULT 'owner' NOT NULL;

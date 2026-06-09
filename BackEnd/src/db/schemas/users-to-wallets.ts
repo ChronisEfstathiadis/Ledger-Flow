@@ -11,6 +11,7 @@ export const usersToWallets = pgTable(
     walletId: text("wallet_id")
       .references(() => wallets.id, { onDelete: "cascade" })
       .notNull(),
+    role: text("role").notNull().default("owner"),
   },
   (t) => [primaryKey({ columns: [t.userId, t.walletId] })]
 );

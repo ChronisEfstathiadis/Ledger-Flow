@@ -308,7 +308,6 @@
 						}
 					}
 				},
-				"description": "Sync / create the user from the Auth0 session. No DB user required yet.",
 				"tags": [
 					"Users"
 				],

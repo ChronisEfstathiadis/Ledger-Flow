@@ -32,7 +32,6 @@ export interface UpdateUserBody {
 @Route("api/users")
 @Tags("Users")
 export class UsersController extends Controller {
-  /** Sync / create the user from the Auth0 session. No DB user required yet. */
   @Post("me")
   public async sync(@Request() req: ExRequest): Promise<UserDto> {
     const oidcUser = req.oidc.user;

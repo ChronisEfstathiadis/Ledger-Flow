@@ -19,9 +19,7 @@ import {
   deleteWallet,
   getAllWalletsByUserId,
 } from "../services/wallets.service";
-import { and, eq } from "drizzle-orm";
-import { db } from "../db";
-import { usersToWallets } from "../db/schemas/users-to-wallets";
+import { assertWalletAccess } from "../services/wallet-access.service";
 
 export interface WalletDto {
   id: string;
@@ -37,18 +35,6 @@ export interface CreateWalletBody {
 
 export type UpdateWalletBody = Partial<CreateWalletBody>;
 
-async function assertWalletAccess(userId: string, walletId: string) {
-  const link = await db.query.usersToWallets.findFirst({
-    where: and(
-      eq(usersToWallets.userId, userId),
-      eq(usersToWallets.walletId, walletId)
-    ),
-  });
-  if (!link) {
-    throw { status: 403, message: "User does not have access to this wallet" };
-  }
-}
-
 @Route("api/wallets")
 @Tags("Wallets")
 @Security("sessionCookie")
@@ -58,7 +44,7 @@ export class WalletsController extends Controller {
     @Body() body: CreateWalletBody,
     @Request() req: ExRequest
   ): Promise<WalletDto> {
-    const [wallet] = await createWallet(body);
+    const wallet = await createWallet(req.dbUser!.id, body);
     this.setStatus(201);
     return wallet as unknown as WalletDto;
   }
