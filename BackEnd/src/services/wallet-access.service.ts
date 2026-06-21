@@ -13,3 +13,16 @@ export async function assertWalletAccess(userId: string, walletId: string) {
     throw { status: 403, message: "User does not have access to this wallet" };
   }
 }
+
+export async function assertWalletOwner(userId: string, walletId: string) {
+  const link = await db.query.usersToWallets.findFirst({
+    where: and(
+      eq(usersToWallets.userId, userId),
+      eq(usersToWallets.walletId, walletId),
+      eq(usersToWallets.role, "owner")
+    ),
+  });
+  if (!link) {
+    throw { status: 403, message: "Only the wallet owner can do this" };
+  }
+}

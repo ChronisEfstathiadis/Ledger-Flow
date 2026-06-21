@@ -20,18 +20,7 @@ import {
   getAllWalletsByUserId,
 } from "../services/wallets.service";
 import { assertWalletAccess } from "../services/wallet-access.service";
-
-export interface WalletDto {
-  id: string;
-  name: string;
-  currency: string;
-  createdAt: string;
-}
-
-export interface CreateWalletBody {
-  name: string;
-  currency: string;
-}
+import { WalletDto, CreateWalletBody } from "../dto/wallets.dto";
 
 export type UpdateWalletBody = Partial<CreateWalletBody>;
 

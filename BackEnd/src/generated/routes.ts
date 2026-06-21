@@ -6,7 +6,11 @@ import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WalletsController } from './../controllers/wallets.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { WalletMembersController } from './../controllers/wallet-members.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UsersController } from './../controllers/users.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { InvitesController } from './../controllers/invites.controller';
 import { expressAuthentication } from './../auth/authentication';
 // @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -47,6 +51,40 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Partial_CreateWalletBody_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WalletMemberDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "role": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WalletInviteDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "walletId": {"dataType":"string","required":true},
+            "inviterId": {"dataType":"string","required":true},
+            "inviteeEmail": {"dataType":"string","required":true},
+            "token": {"dataType":"string","required":true},
+            "status": {"dataType":"string","required":true},
+            "expiresAt": {"dataType":"datetime","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateInviteBody": {
+        "dataType": "refObject",
+        "properties": {
+            "inviteeEmail": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserDto": {
         "dataType": "refObject",
         "properties": {
@@ -64,6 +102,16 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": {"dataType":"string"},
             "email": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WalletMemberLinkDto": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"string","required":true},
+            "walletId": {"dataType":"string","required":true},
+            "role": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -245,6 +293,169 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsWalletMembersController_listMembers: Record<string, TsoaRoute.ParameterSchema> = {
+                walletId: {"in":"path","name":"walletId","required":true,"dataType":"string"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.get('/api/wallets/:walletId/members',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController)),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController.prototype.listMembers)),
+
+            async function WalletMembersController_listMembers(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsWalletMembersController_listMembers, request, response });
+
+                const controller = new WalletMembersController();
+
+              await templateService.apiHandler({
+                methodName: 'listMembers',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsWalletMembersController_createWalletInvite: Record<string, TsoaRoute.ParameterSchema> = {
+                walletId: {"in":"path","name":"walletId","required":true,"dataType":"string"},
+                body: {"in":"body","name":"body","required":true,"ref":"CreateInviteBody"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.post('/api/wallets/:walletId/invites',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController)),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController.prototype.createWalletInvite)),
+
+            async function WalletMembersController_createWalletInvite(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsWalletMembersController_createWalletInvite, request, response });
+
+                const controller = new WalletMembersController();
+
+              await templateService.apiHandler({
+                methodName: 'createWalletInvite',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsWalletMembersController_listWalletInvites: Record<string, TsoaRoute.ParameterSchema> = {
+                walletId: {"in":"path","name":"walletId","required":true,"dataType":"string"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.get('/api/wallets/:walletId/invites',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController)),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController.prototype.listWalletInvites)),
+
+            async function WalletMembersController_listWalletInvites(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsWalletMembersController_listWalletInvites, request, response });
+
+                const controller = new WalletMembersController();
+
+              await templateService.apiHandler({
+                methodName: 'listWalletInvites',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsWalletMembersController_revokeWalletInvite: Record<string, TsoaRoute.ParameterSchema> = {
+                walletId: {"in":"path","name":"walletId","required":true,"dataType":"string"},
+                inviteId: {"in":"path","name":"inviteId","required":true,"dataType":"string"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.delete('/api/wallets/:walletId/invites/:inviteId',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController)),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController.prototype.revokeWalletInvite)),
+
+            async function WalletMembersController_revokeWalletInvite(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsWalletMembersController_revokeWalletInvite, request, response });
+
+                const controller = new WalletMembersController();
+
+              await templateService.apiHandler({
+                methodName: 'revokeWalletInvite',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsWalletMembersController_removeWalletMember: Record<string, TsoaRoute.ParameterSchema> = {
+                walletId: {"in":"path","name":"walletId","required":true,"dataType":"string"},
+                userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.delete('/api/wallets/:walletId/members/:userId',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController)),
+            ...(fetchMiddlewares<RequestHandler>(WalletMembersController.prototype.removeWalletMember)),
+
+            async function WalletMembersController_removeWalletMember(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsWalletMembersController_removeWalletMember, request, response });
+
+                const controller = new WalletMembersController();
+
+              await templateService.apiHandler({
+                methodName: 'removeWalletMember',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUsersController_sync: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
@@ -327,6 +538,101 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'updateMe',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInvitesController_listMyInvites: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.get('/api/invites/mine',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(InvitesController)),
+            ...(fetchMiddlewares<RequestHandler>(InvitesController.prototype.listMyInvites)),
+
+            async function InvitesController_listMyInvites(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInvitesController_listMyInvites, request, response });
+
+                const controller = new InvitesController();
+
+              await templateService.apiHandler({
+                methodName: 'listMyInvites',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInvitesController_acceptWalletInvite: Record<string, TsoaRoute.ParameterSchema> = {
+                token: {"in":"path","name":"token","required":true,"dataType":"string"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.post('/api/invites/:token/accept',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(InvitesController)),
+            ...(fetchMiddlewares<RequestHandler>(InvitesController.prototype.acceptWalletInvite)),
+
+            async function InvitesController_acceptWalletInvite(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInvitesController_acceptWalletInvite, request, response });
+
+                const controller = new InvitesController();
+
+              await templateService.apiHandler({
+                methodName: 'acceptWalletInvite',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInvitesController_declineWalletInvite: Record<string, TsoaRoute.ParameterSchema> = {
+                token: {"in":"path","name":"token","required":true,"dataType":"string"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.post('/api/invites/:token/decline',
+            authenticateMiddleware([{"sessionCookie":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(InvitesController)),
+            ...(fetchMiddlewares<RequestHandler>(InvitesController.prototype.declineWalletInvite)),
+
+            async function InvitesController_declineWalletInvite(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInvitesController_declineWalletInvite, request, response });
+
+                const controller = new InvitesController();
+
+              await templateService.apiHandler({
+                methodName: 'declineWalletInvite',
                 controller,
                 response,
                 next,

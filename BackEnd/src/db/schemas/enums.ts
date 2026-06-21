@@ -7,5 +7,6 @@ export const WalletInviteStatusEnum = pgEnum("status", [
   "pending",
   "accepted",
   "rejected",
+  "revoked",
   "expired",
 ]);

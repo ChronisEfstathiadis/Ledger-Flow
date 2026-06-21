@@ -5,3 +5,5 @@ export * from "./recurring-templates";
 export * from "./transactions";
 export * from "./enums";
 export * from "./users-to-wallets";
+export * from "./wallet-invites";
+export * from "./transaction_splits";

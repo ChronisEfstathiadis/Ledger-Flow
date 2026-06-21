@@ -15,19 +15,7 @@ import {
   getByAuth0Id,
   updateUser,
 } from "../services/users.service";
-
-export interface UserDto {
-  id: string;
-  auth0Id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-}
-
-export interface UpdateUserBody {
-  name?: string;
-  email?: string;
-}
+import { UserDto, UpdateUserBody } from "../dto/users.dto";
 
 @Route("api/users")
 @Tags("Users")

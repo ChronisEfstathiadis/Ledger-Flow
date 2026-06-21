@@ -45,3 +45,9 @@ export async function updateUser(
     .returning();
   return updated;
 }
+
+export async function findByEmail(email: string) {
+  return db.query.users.findFirst({
+    where: eq(users.email, email),
+  });
+}

@@ -62,6 +62,84 @@
 			"UpdateWalletBody": {
 				"$ref": "#/components/schemas/Partial_CreateWalletBody_"
 			},
+			"WalletMemberDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email",
+					"role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"WalletInviteDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"walletId": {
+						"type": "string"
+					},
+					"inviterId": {
+						"type": "string"
+					},
+					"inviteeEmail": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"expiresAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"walletId",
+					"inviterId",
+					"inviteeEmail",
+					"token",
+					"status",
+					"expiresAt",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateInviteBody": {
+				"properties": {
+					"inviteeEmail": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"inviteeEmail"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"UserDto": {
 				"properties": {
 					"id": {
@@ -100,6 +178,26 @@
 						"type": "string"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"WalletMemberLinkDto": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"walletId": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"walletId",
+					"role"
+				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -293,6 +391,197 @@
 				]
 			}
 		},
+		"/api/wallets/{walletId}/members": {
+			"get": {
+				"operationId": "ListMembers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/WalletMemberDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wallet Members"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "walletId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wallets/{walletId}/invites": {
+			"post": {
+				"operationId": "CreateWalletInvite",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/WalletInviteDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wallet Members"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "walletId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateInviteBody"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "ListWalletInvites",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/WalletInviteDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wallet Members"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "walletId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wallets/{walletId}/invites/{inviteId}": {
+			"delete": {
+				"operationId": "RevokeWalletInvite",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Wallet Members"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "walletId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "inviteId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wallets/{walletId}/members/{userId}": {
+			"delete": {
+				"operationId": "RemoveWalletMember",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Wallet Members"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "walletId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/users/me": {
 			"post": {
 				"operationId": "Sync",
@@ -371,6 +660,98 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/invites/mine": {
+			"get": {
+				"operationId": "ListMyInvites",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/WalletInviteDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Invites"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/invites/{token}/accept": {
+			"post": {
+				"operationId": "AcceptWalletInvite",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/WalletMemberLinkDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Invites"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/invites/{token}/decline": {
+			"post": {
+				"operationId": "DeclineWalletInvite",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Invites"
+				],
+				"security": [
+					{
+						"sessionCookie": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
